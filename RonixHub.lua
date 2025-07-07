@@ -14,31 +14,52 @@ MainSection:AddButton("Auto Farm V1", function()
     local players = game:GetService("Players")
 local plr = players.LocalPlayer
 local tween = game:GetService("TweenService")
-game.Workspace.Gravity = 0.5 -- reduces glitchiness
+game.Workspace.Gravity = 0.5 -- giảm glitch
+
 function main()
     local humroot = plr.Character:WaitForChild("HumanoidRootPart")
-    local startTween = tween:Create(humroot, TweenInfo.new(0, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0), {CFrame = CFrame.new(-51.3946900, 67.3164978, 814.888123, -0.999501824, -0.00451373775, 0.0312365349, -8.62000427e-09, 0.989720345, 0.14301616, -0.0315609723, 0.142944917, -0.989227295)})
+
+    -- Tween đến điểm bắt đầu
+    local startTween = tween:Create(humroot, TweenInfo.new(0, Enum.EasingStyle.Linear), {
+        CFrame = CFrame.new(-51.3946900, 67.3164978, 814.888123, -0.999501824, -0.00451373775, 0.0312365349,
+        -8.62000427e-09, 0.989720345, 0.14301616, -0.0315609723, 0.142944917, -0.989227295)
+    })
     startTween:Play()
     startTween.Completed:Wait()
-    local mainTween = tween:Create(humroot, TweenInfo.new(22, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0), {CFrame = CFrame.new(-77.0485153, 82.6013031, 8625.86719, -0.995574772, 0.022579968, -0.0912195817, -4.97565011e-09, 0.970703065, 0.240282282, 0.0939726979, 0.23921898, -0.966407478)})
+
+    -- ⚙️ Bay chậm hơn (31 giây)
+    local mainTween = tween:Create(humroot, TweenInfo.new(31, Enum.EasingStyle.Linear), {
+        CFrame = CFrame.new(-77.0485153, 82.6013031, 8625.86719, -0.995574772, 0.022579968, -0.0912195817,
+        -4.97565011e-09, 0.970703065, 0.240282282, 0.0939726979, 0.23921898, -0.966407478)
+    })
     mainTween:Play()
     mainTween.Completed:Wait()
-    local endTween = tween:Create(humroot, TweenInfo.new(0, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0), {CFrame = game:GetService("Workspace").BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame})
-    endTween:Play()
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-    wait(0.60)
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 
+    -- Đến rương vàng
+    local endTween = tween:Create(humroot, TweenInfo.new(0, Enum.EasingStyle.Linear), {
+        CFrame = game:GetService("Workspace").BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame
+    })
+    endTween:Play()
+
+    -- Dừng lại để nhận vàng
+    humroot.Anchored = true
+    wait(0.6)
+    humroot.Anchored = false
 end
+
+-- 🚀 Chạy lần đầu
 main()
+
+-- 🔁 Tự động chạy lại nếu nhân vật respawn
 plr.CharacterAdded:Connect(function(char)
     char:WaitForChild("HumanoidRootPart")
+    wait(1)
     main()
 end)
 end)
 
 MainSection:AddToggle("Auto Farm V2", false, function()
-    game:GetService("StarterGui"):SetCore("SendNotification",{     
+ game:GetService("StarterGui"):SetCore("SendNotification",{     
 Title = "Script",     
 Text = "starting Autofarm",
 Button1 = "Ok :)",
@@ -138,7 +159,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-55.8801
 end
 
 mainshit(game.Players.LocalPlayer.Character)
-game.Players.LocalPlayer.CharacterAdded:Connect(mainshit)
+game.Players.LocalPlayer.CharacterAdded:Connect(mainshit)")
 end)
 
 
